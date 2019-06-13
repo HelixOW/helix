@@ -3,7 +3,9 @@ package io.github.whoisalphahelix.helix.hon;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
+import io.github.whoisalphahelix.helix.handlers.UtilHandler;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -36,6 +38,14 @@ public class Hon {
 		this.arrayHead.add(new JsonObject());
 		this.head = (JsonObject) arrayHead.get(0);
 	}
+
+    public Hon(JsonArray arrayHead) {
+        this(Helix.helix(), arrayHead);
+    }
+
+    public Hon() {
+        this(Helix.helix());
+    }
 	
 	public Hon add(Object value) {
 		JsonObject obj = new JsonObject();
@@ -106,7 +116,7 @@ public class Hon {
 		
 		Map.Entry<List<JsonObject>, List<String>> paths = getJsonPath(path);
 		JsonObject last = paths.getKey().get(paths.getKey().size() - 1);
-		JsonObject wrapper = last.getAsJsonObject(this.helix.utilHandler().getStringUtil().getAfterLast(path, "\\."));
+        JsonObject wrapper = last.getAsJsonObject(UtilHandler.strings().getAfterLast(path, "\\."));
 		
 		try {
 			Class<T> valClass = (Class<T>) Class.forName(wrapper.get("class").getAsString());

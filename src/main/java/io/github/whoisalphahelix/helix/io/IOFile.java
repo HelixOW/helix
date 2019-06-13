@@ -1,5 +1,6 @@
 package io.github.whoisalphahelix.helix.io;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,7 +47,23 @@ public class IOFile extends File {
 		this.helix.ioHandler().createFile(this);
 		this.content = this.helix.ioHandler().readFile(this);
 	}
-	
+
+    public IOFile(String pathname) throws IOException {
+        this(pathname, Helix.helix());
+    }
+
+    public IOFile(String parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public IOFile(File parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public IOFile(URI uri) throws IOException {
+        this(uri, Helix.helix());
+    }
+
 	public IOFile write(String toWrite) {
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(this))) {
 			this.content = this.content + System.lineSeparator() + toWrite;

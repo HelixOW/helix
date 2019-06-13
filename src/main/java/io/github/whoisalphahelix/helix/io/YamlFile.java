@@ -1,5 +1,6 @@
 package io.github.whoisalphahelix.helix.io;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,7 +38,23 @@ public class YamlFile extends IOFile {
 	public YamlFile(URI uri, IHelix helix) throws IOException {
 		super(uri, helix);
 	}
-	
+
+    public YamlFile(String pathname) throws IOException {
+        this(pathname, Helix.helix());
+    }
+
+    public YamlFile(String parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public YamlFile(File parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public YamlFile(URI uri) throws IOException {
+        this(uri, Helix.helix());
+    }
+
 	public YamlFile setValue(String path, Object obj) {
 		yaml.put(path, obj);
 		return this;

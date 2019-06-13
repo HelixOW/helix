@@ -1,5 +1,6 @@
 package io.github.whoisalphahelix.helix.netty.server;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -30,6 +31,10 @@ public class EchoServer {
 		this.helix = helix;
 		this.port = port;
 	}
+
+    public EchoServer(int port) {
+        this(Helix.helix(), port);
+    }
 	
 	public void start() {
 		ServerBootstrap b = new ServerBootstrap();

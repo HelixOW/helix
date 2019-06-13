@@ -1,5 +1,6 @@
 package io.github.whoisalphahelix.helix.netty.server;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.github.whoisalphahelix.helix.netty.RequestProcessor;
 import io.netty.buffer.ByteBuf;
@@ -22,6 +23,10 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
 	public EchoServerHandler(IHelix helix) {
 		this.helix = helix;
 	}
+
+    public EchoServerHandler() {
+        this(Helix.helix());
+    }
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

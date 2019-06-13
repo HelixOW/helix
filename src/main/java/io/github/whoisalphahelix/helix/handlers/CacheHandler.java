@@ -41,14 +41,19 @@ public class CacheHandler {
 		cacheTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				for(Cache c : CacheHandler.this.caches) {
-					c.save();
-					c.clear();
-					CacheHandler.this.logger.info(c.log());
-				}
+				purge();
 			}
 		}, this.cacheClearTime * 1000 * 60, this.cacheClearTime * 1000 * 60);
-		
+
+		return this;
+	}
+
+	public CacheHandler purge() {
+		for (Cache c : CacheHandler.this.caches) {
+			c.save();
+			c.clear();
+			CacheHandler.this.logger.info(c.log());
+		}
 		return this;
 	}
 }

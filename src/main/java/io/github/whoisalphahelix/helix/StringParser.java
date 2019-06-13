@@ -1,9 +1,12 @@
 package io.github.whoisalphahelix.helix;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class StringParser {
-	private static final List<ParsedObject<?>> PARSED_OBJECTS = new ArrayList<>(Arrays.asList(
+    private static final List<ParsedObject<?>> PARSABLE_OBJECTS = new ArrayList<>(Arrays.asList(
 			(ParsedObject<UUID>) UUID::fromString,
 			(ParsedObject<Boolean>) commandString -> {
 				List<String> trueBools = Arrays.asList("true", "on", "t");
@@ -29,18 +32,18 @@ public class StringParser {
 			},
 			(ParsedObject<String>) commandString -> commandString
 	));
+
+    public static List<ParsedObject<?>> getParsableObjects() {
+        return PARSABLE_OBJECTS;
+    }
 	
 	public final Object parseString(String arg) {
-		for(ParsedObject<?> o : PARSED_OBJECTS)
+        for (ParsedObject<?> o : PARSABLE_OBJECTS)
 			try {
 				return o.fromString(arg);
 			} catch(Exception ignored) {
 			}
-		
-		return null;
-	}
-	
-	public static List<ParsedObject<?>> getParsedObjects() {
-		return PARSED_OBJECTS;
+
+        return null;
 	}
 }

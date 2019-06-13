@@ -2,6 +2,7 @@ package io.github.whoisalphahelix.helix.io;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,7 +42,23 @@ public class JsonFile extends IOFile {
 		super(uri, helix);
 		this.element = read();
 	}
-	
+
+    public JsonFile(String pathname) throws IOException {
+        this(pathname, Helix.helix());
+    }
+
+    public JsonFile(String parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public JsonFile(File parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public JsonFile(URI uri) throws IOException {
+        this(uri, Helix.helix());
+    }
+
 	private JsonElement read() {
 		if(getContent().isEmpty())
 			return JsonNull.INSTANCE;

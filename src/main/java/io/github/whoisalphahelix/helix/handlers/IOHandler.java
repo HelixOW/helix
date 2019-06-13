@@ -28,6 +28,12 @@ public class IOHandler {
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		}
+
+        if (!file.setExecutable(true))
+            System.out.println("Unable to set File executable (" + file.getAbsolutePath() + ")");
+        if (!file.setWritable(true)) System.out.println("Unable to set File writable (" + file.getAbsolutePath() + ")");
+        if (!file.setReadable(true)) System.out.println("Unable to set File readable (" + file.getAbsolutePath() + ")");
+
 		return file;
 	}
 	
@@ -41,7 +47,7 @@ public class IOHandler {
 	
 	public File createFolder(File folder) {
 		if(folder.isDirectory())
-			folder.mkdirs();
+            if (!folder.mkdirs()) System.out.println("Unable to create folder (" + folder.getAbsolutePath() + ")");
 		return folder;
 	}
 	

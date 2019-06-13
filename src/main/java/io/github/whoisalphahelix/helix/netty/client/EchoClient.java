@@ -1,6 +1,7 @@
 package io.github.whoisalphahelix.helix.netty.client;
 
 import com.google.gson.JsonElement;
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -24,6 +25,10 @@ public class EchoClient {
 	
 	private final IHelix helix;
 	private final EchoClientHandler ech;
+
+    public EchoClient(String host, int port) {
+        this(Helix.helix(), host, port);
+    }
 	
 	public EchoClient(IHelix helix, String host, int port) {
 		this.helix = helix;

@@ -1,5 +1,6 @@
 package io.github.whoisalphahelix.helix.reflection.exceptions;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.github.whoisalphahelix.helix.reflection.SaveConstructor;
 import io.github.whoisalphahelix.helix.reflection.SaveField;
@@ -14,7 +15,11 @@ import java.util.stream.Collectors;
 public class LogExceptionHandler implements ExceptionHandler {
 	
 	private final IHelix helix;
-	
+
+    public LogExceptionHandler() {
+        this(Helix.helix());
+    }
+
 	@Override
 	public SaveMethod noSuchMethod(Class<?> where, String name, Class<?>... parameterClasses) {
 		this.helix.logger().log(Level.SEVERE, "Unable to find " + name +

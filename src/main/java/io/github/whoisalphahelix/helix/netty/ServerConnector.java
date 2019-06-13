@@ -1,6 +1,7 @@
 package io.github.whoisalphahelix.helix.netty;
 
 import com.google.gson.JsonElement;
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.github.whoisalphahelix.helix.netty.client.EchoClient;
 import io.github.whoisalphahelix.helix.netty.server.EchoServer;
@@ -21,7 +22,11 @@ public class ServerConnector {
 	private final IHelix helix;
 	private EchoServer server;
 	private EchoClient client;
-	
+
+    public ServerConnector(int ownPort, String host, int port) {
+        this(Helix.helix(), ownPort, host, port);
+    }
+
 	public ServerConnector(IHelix helix, int ownPort, String host, int port) {
 		this.helix = helix;
 		

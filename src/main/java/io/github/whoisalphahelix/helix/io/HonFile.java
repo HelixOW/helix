@@ -2,6 +2,7 @@ package io.github.whoisalphahelix.helix.io;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.github.whoisalphahelix.helix.hon.Hon;
 import lombok.EqualsAndHashCode;
@@ -42,7 +43,23 @@ public class HonFile extends IOFile {
 		super(uri, helix);
 		this.hon = new Hon(helix, readArray());
 	}
-	
+
+    public HonFile(String pathname) throws IOException {
+        this(pathname, Helix.helix());
+    }
+
+    public HonFile(String parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public HonFile(File parent, String child) throws IOException {
+        this(parent, child, Helix.helix());
+    }
+
+    public HonFile(URI uri) throws IOException {
+        this(uri, Helix.helix());
+    }
+
 	private JsonArray readArray() {
 		JsonArray array = new JsonArray();
 		

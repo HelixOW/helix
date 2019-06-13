@@ -1,6 +1,8 @@
 package io.github.whoisalphahelix.helix.reflection;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
+import io.github.whoisalphahelix.helix.handlers.UtilHandler;
 import io.github.whoisalphahelix.helix.reflection.exceptions.ExceptionHandler;
 import io.github.whoisalphahelix.helix.reflection.exceptions.NullExceptionHandler;
 import lombok.EqualsAndHashCode;
@@ -33,6 +35,10 @@ public class Reflection {
 		this.cache = new ReflectiveCache(helix);
 		this.setExceptionHandler(new NullExceptionHandler());
 	}
+
+    public Reflection() {
+        this(Helix.helix());
+    }
 	
 	public SaveField getField(String name, Class<?> clazz) {
 		if(this.getCache().fields().containsKey(name, clazz))
@@ -40,8 +46,8 @@ public class Reflection {
 		
 		try {
 			SaveField f = new SaveField(clazz.getField(name));
-			
-			this.getCache().fields().put(name, clazz, f);
+
+            this.getCache().fields().put(f, name, clazz);
 			
 			return f;
 		} catch(NoSuchFieldException e) {
@@ -55,8 +61,8 @@ public class Reflection {
 		
 		try {
 			SaveField f = new SaveField(clazz.getDeclaredField(name));
-			
-			this.getCache().privateFields().put(name, clazz, f);
+
+            this.getCache().privateFields().put(f, name, clazz);
 			
 			return f;
 		} catch(NoSuchFieldException e) {
@@ -65,11 +71,11 @@ public class Reflection {
 	}
 	
 	public List<SaveField> getFields(Class<?>... classes) {
-		return this.helix.utilHandler().getArrayUtil().merge(Arrays.stream(classes).map(this::getFields).collect(Collectors.toList()));
+        return UtilHandler.arrays().merge(Arrays.stream(classes).map(this::getFields).collect(Collectors.toList()));
 	}
 	
 	public List<SaveField> getDeclaredFields(Class<?>... classes) {
-		return this.helix.utilHandler().getArrayUtil().merge(Arrays.stream(classes).map(this::getDeclaredFields).collect(Collectors.toList()));
+        return UtilHandler.arrays().merge(Arrays.stream(classes).map(this::getDeclaredFields).collect(Collectors.toList()));
 	}
 	
 	public List<SaveField> getFields(Class<?> clazz, boolean supers) {
@@ -95,8 +101,8 @@ public class Reflection {
 		
 		for(int i = 0; i < fs.length; i++) {
 			SaveField f = new SaveField(fs[i], i);
-			
-			this.getCache().fields().put(f.asNormal().getName(), clazz, f);
+
+            this.getCache().fields().put(f, f.asNormal().getName(), clazz);
 			
 			fields.add(f);
 		}
@@ -115,8 +121,8 @@ public class Reflection {
 		
 		for(int i = 0; i < fs.length; i++) {
 			SaveField f = new SaveField(fs[i], i);
-			
-			this.getCache().privateFields().put(f.asNormal().getName(), clazz, f);
+
+            this.getCache().privateFields().put(f, f.asNormal().getName(), clazz);
 			
 			fields.add(f);
 		}
@@ -171,8 +177,8 @@ public class Reflection {
 		
 		try {
 			SaveMethod sm = new SaveMethod(clazz.getMethod(name, parameterClasses));
-			
-			this.getCache().methods().put(name, clazz, parameterClasses, sm);
+
+            this.getCache().methods().put(sm, name, clazz, parameterClasses);
 			
 			return sm;
 		} catch(NoSuchMethodException e) {
@@ -186,8 +192,8 @@ public class Reflection {
 		
 		try {
 			SaveMethod sm = new SaveMethod(clazz.getDeclaredMethod(name, parameterClasses));
-			
-			this.getCache().privateMethods().put(name, clazz, parameterClasses, sm);
+
+            this.getCache().privateMethods().put(sm, name, clazz, parameterClasses);
 			
 			return sm;
 		} catch(NoSuchMethodException e) {
@@ -324,14 +330,14 @@ public class Reflection {
 		try {
 			if(asArray) {
 				Class<?> arrayClazz = Array.newInstance(Class.forName(name), 0).getClass();
-				
-				this.getCache().types().put(name, true, arrayClazz);
+
+                this.getCache().types().put(arrayClazz, name, true);
 				
 				return arrayClazz;
 			} else {
 				Class<?> clazz = Class.forName(name);
-				
-				this.getCache().types().put(name, false, clazz);
+
+                this.getCache().types().put(clazz, name, false);
 				
 				return clazz;
 			}
@@ -408,8 +414,8 @@ public class Reflection {
 		
 		try {
 			SaveConstructor sc = new SaveConstructor(clazz.getConstructor(parameterClasses));
-			
-			this.getCache().constructors().put(clazz, parameterClasses, sc);
+
+            this.getCache().constructors().put(sc, clazz, parameterClasses);
 			
 			return sc;
 		} catch(NoSuchMethodException e) {
@@ -423,8 +429,8 @@ public class Reflection {
 		
 		try {
 			SaveConstructor sc = new SaveConstructor(clazz.getDeclaredConstructor(parameterClasses));
-			
-			this.getCache().privateConstructors().put(clazz, parameterClasses, sc);
+
+            this.getCache().privateConstructors().put(sc, clazz, parameterClasses);
 			
 			return sc;
 		} catch(NoSuchMethodException e) {

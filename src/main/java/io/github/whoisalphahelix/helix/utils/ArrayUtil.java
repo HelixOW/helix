@@ -1,7 +1,10 @@
 package io.github.whoisalphahelix.helix.utils;
 
 import io.github.whoisalphahelix.helix.handlers.UtilHandler;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +18,6 @@ import java.util.stream.Collectors;
 @ToString
 @RequiredArgsConstructor
 public class ArrayUtil {
-	
-	private final UtilHandler utilHandler;
 	
 	public String[] replaceInArray(String pattern, String replace, String... array) {
 		for(int i = 0; i < array.length; i++) {
@@ -92,7 +93,7 @@ public class ArrayUtil {
 	
 	public double[] trim(int decimal, double... a) {
 		for(int i = 0; i < a.length; i++)
-			a[i] = getUtilHandler().getMathUtil().trim(a[i], decimal);
+            a[i] = UtilHandler.math().trim(a[i], decimal);
 		
 		return a;
 	}
@@ -100,9 +101,9 @@ public class ArrayUtil {
 	public double[][] trim(int decimal, double[]... coordinates) {
 		for(int i = 0; i < coordinates.length; i++) {
 			coordinates[i] = new double[]{
-					getUtilHandler().getMathUtil().trim(coordinates[i][0], decimal),
-					getUtilHandler().getMathUtil().trim(coordinates[i][1], decimal),
-					getUtilHandler().getMathUtil().trim(coordinates[i][2], decimal)};
+                    UtilHandler.math().trim(coordinates[i][0], decimal),
+                    UtilHandler.math().trim(coordinates[i][1], decimal),
+                    UtilHandler.math().trim(coordinates[i][2], decimal)};
 		}
 		return coordinates;
 	}

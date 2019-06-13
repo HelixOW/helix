@@ -1,5 +1,6 @@
 package io.github.whoisalphahelix.helix.handlers;
 
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.github.whoisalphahelix.helix.annotations.Random;
 import io.github.whoisalphahelix.helix.annotations.Singleton;
@@ -16,9 +17,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AnnotationHandler {
 	
 	private final IHelix helix;
-	
+
+    public AnnotationHandler() {
+        this.helix = Helix.helix();
+    }
+
 	public void createSingletons() {
-		this.helix.reflections2().getTypesAnnotatedWith(Singleton.class).stream().filter(aClass -> {
+        this.helix.reflections().getTypesAnnotatedWith(Singleton.class).stream().filter(aClass -> {
 			try {
 				return aClass.getDeclaredConstructor() != null;
 			} catch(NoSuchMethodException e) {
@@ -37,7 +42,7 @@ public class AnnotationHandler {
 	}
 	
 	public void randomizeFields() {
-		this.helix.reflections2().getTypesAnnotatedWith(Random.class).stream().filter(aClass -> {
+        this.helix.reflections().getTypesAnnotatedWith(Random.class).stream().filter(aClass -> {
 			try {
 				return aClass.getDeclaredConstructor() != null;
 			} catch(NoSuchMethodException e) {
@@ -60,7 +65,7 @@ public class AnnotationHandler {
 			
 			switch(randomField.asNormal().getType().getName().toLowerCase()) {
 				case "string":
-					randomField.set(o, this.helix.utilHandler().getStringUtil().generateRandomString(r.max()));
+                    randomField.set(o, UtilHandler.strings().generateRandomString(r.max()));
 					break;
 				case "double":
 					randomField.set(o, ThreadLocalRandom.current().nextDouble(r.min(), r.max()));

@@ -1,6 +1,7 @@
 package io.github.whoisalphahelix.helix.netty.client;
 
 import com.google.gson.JsonParser;
+import io.github.whoisalphahelix.helix.Helix;
 import io.github.whoisalphahelix.helix.IHelix;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -25,6 +26,10 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 	public EchoClientHandler(IHelix helix) {
 		this.helix = helix;
 	}
+
+    public EchoClientHandler() {
+        this(Helix.helix());
+    }
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
